@@ -71,6 +71,7 @@
 	David Barr, aka javidx9, ©OneLoneCoder 2019
 */
 
+#include <cstdint>
 #include "olc6502.h"
 #include "Bus.h"
 

@@ -68,11 +68,12 @@
 
 	Author
 	~~~~~~
-	David Barr, aka javidx9, ©OneLoneCoder 2019
+	David Barr, aka javidx9, ï¿½OneLoneCoder 2019
 */
 
 #include <iostream>
 #include <sstream>
+#include <cstdint>
 
 #include "Bus.h"
 #include "olc6502.h"

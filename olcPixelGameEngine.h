@@ -2706,7 +2706,7 @@ namespace olc
 
 		if (structure == olc::DecalStructure::LIST)
 		{			
-			for (int tri = 0; tri < vPoints.size() / 3; tri++)
+			for (long unsigned int tri = 0; tri < vPoints.size() / 3; tri++)
 			{
 				std::vector<olc::vf2d> vP = { vPoints[tri * 3 + 0], vPoints[tri * 3 + 1], vPoints[tri * 3 + 2] };
 				std::vector<olc::vf2d> vT = { vTex[tri * 3 + 0], vTex[tri * 3 + 1], vTex[tri * 3 + 2] };
@@ -2718,7 +2718,7 @@ namespace olc
 
 		if (structure == olc::DecalStructure::STRIP)
 		{
-			for (int tri = 2; tri < vPoints.size(); tri++)
+			for (long unsigned int tri = 2; tri < vPoints.size(); tri++)
 			{
 				std::vector<olc::vf2d> vP = { vPoints[tri - 2], vPoints[tri-1], vPoints[tri] };
 				std::vector<olc::vf2d> vT = { vTex[tri - 2], vTex[tri - 1], vTex[tri] };
@@ -2730,7 +2730,7 @@ namespace olc
 
 		if (structure == olc::DecalStructure::FAN)
 		{
-			for (int tri = 2; tri < vPoints.size(); tri++)
+			for (long unsigned int tri = 2; tri < vPoints.size(); tri++)
 			{
 				std::vector<olc::vf2d> vP = { vPoints[0], vPoints[tri - 1], vPoints[tri] };
 				std::vector<olc::vf2d> vT = { vTex[0], vTex[tri - 1], vTex[tri] };
