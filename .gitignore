@@ -21,3 +21,6 @@
 # Temporary files
 *.tmp
 *.bak
+
+# Target executable
+6502glx

@@ -2,7 +2,7 @@ CC      = gcc
 CFLAGS  = -Wall -O2
 LIBS	= -lstdc++ -lm -lGL -lX11 -lpng
 DEPS	= olcPixelGameEngine.h
-OBJ		= olcNes_Video1_6502.o  Bus.o olc6502.o 
+OBJ		= 6502glx.o  Bus.o olc6502.o 
 OUT		= 6502glx
 
 %.o: %.c $(DEPS)
