@@ -141,21 +141,19 @@ public:
 
 	bool OnUserCreate()
 	{
-		// Load Program (assembled at https://www.masswerk.at/6502/assembler.html)
+			// Load Program (assembled at https://www.masswerk.at/6502/assembler.html)
 		/*
 			*=$8000
-			LDX #10
-			STX $0000
-			LDX #3
-			STX $0001
-			LDY $0000
+			LDA #3
+			STA $01
 			LDA #0
+			LDY #11			 
 			CLC
 			loop
-			ADC $0001
+			ADC $01
 			DEY
 			BNE loop
-			STA $0002
+			STA $02
 			NOP
 			NOP
 			NOP
@@ -163,7 +161,7 @@ public:
 		
 		// Convert hex string into bytes for RAM
 		std::stringstream ss;
-		ss << "A2 0A 8E 00 00 A2 03 8E 01 00 AC 00 00 A9 00 18 6D 01 00 88 D0 FA 8D 02 00 EA EA EA";
+		ss << "A9 03 85 01 A9 00 A0 0B 18 65 01 88 D0 FB 85 02 EA EA EA";
 		uint16_t nOffset = 0x8000;
 		while (!ss.eof())
 		{
