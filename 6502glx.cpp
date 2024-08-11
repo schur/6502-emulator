@@ -63,6 +63,7 @@ public:
 
 	Bus nes;
 	std::map<uint16_t, std::string> mapAsm;
+	std::vector<uint8_t> prog_buf;		// buffer to hold the program (before being loaded into nes.ram)
 
 	std::string hex(uint32_t n, uint8_t d)
 	{
@@ -111,6 +112,7 @@ public:
 	{
 		auto it_a = mapAsm.find(nes.cpu.pc);
 		int nLineY = (nLines >> 1) * 10 + y;
+		
 		if (it_a != mapAsm.end())
 		{
 			DrawString(x, nLineY, (*it_a).second, olc::CYAN);
@@ -136,12 +138,12 @@ public:
 					DrawString(x, nLineY, (*it_a).second);
 				}
 			}
-		}
+		}		
 	}
 
-	bool OnUserCreate()
+	void LoadDefaultProgram()
 	{
-			// Load Program (assembled at https://www.masswerk.at/6502/assembler.html)
+		// Load Program (assembled at https://www.masswerk.at/6502/assembler.html)
 		/*
 			*=$8000
 			LDA #3
@@ -159,15 +161,27 @@ public:
 			NOP
 		*/
 		
-		// Convert hex string into bytes for RAM
 		std::stringstream ss;
 		ss << "A9 03 85 01 A9 00 A0 0B 18 65 01 88 D0 FB 85 02 EA EA EA";
-		uint16_t nOffset = 0x8000;
+
 		while (!ss.eof())
-		{
+		{	//Convert hex string into bytes and store in prog_buf
 			std::string b;
 			ss >> b;
-			nes.ram[nOffset++] = (uint8_t)std::stoul(b, nullptr, 16);
+			uint8_t bb = (uint8_t)std::stoul(b, nullptr, 16);
+				// debug msg std::cerr << "b: " << b << ", bb: " << std::to_string(bb) << std::endl;
+			prog_buf.push_back(bb); 
+		}
+	}
+
+
+	bool OnUserCreate()
+	{
+		// load program from prog_buf into emulated ram
+		uint16_t nOffset = 0x8000;
+		for (int i=0; i<size(prog_buf); i++)
+		{
+			nes.ram[nOffset+i] = prog_buf[i];
 		}
 
 		// Set Reset Vector
@@ -224,10 +238,21 @@ public:
 
 
 
-int main()
+int main(int argc, char* argv[])
 {
+	if (argc>2) {
+		std::cerr << "Usage: " << argv[0] << " [OPTION] [FILE]" << std::endl;
+		return 1;
+	}
+
 	Demo_olc6502 demo;
+
+	if (argc<2)	{
+		demo.LoadDefaultProgram();		// if no file given, load a short default demo program
+	}
+
 	demo.Construct(680, 480, 2, 2);
 	demo.Start();
+
 	return 0;
 }
