@@ -47,6 +47,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstdint>
+#include <iterator>
 
 #include "Bus.h"
 #include "olc6502.h"
@@ -174,6 +175,37 @@ public:
 		}
 	}
 
+    bool loadProgramFromFile(const char *fileName) noexcept
+        {
+        // Try to open a file specified by its name
+        std::ifstream file(fileName, std::ios::in | std::ios::binary);
+        if (!file.is_open() || file.bad())
+            return false;
+
+        // Clear whitespace removal flag
+        file.unsetf(std::ios::skipws);
+
+        // Determine size of the file
+        file.seekg(0, std::ios_base::end);
+        size_t fileSize = file.tellg();
+        file.seekg(0, std::ios_base::beg);
+
+        // Discard previous vector content
+        /* prog_buf.resize(0);
+        prog_buf.reserve(0);
+        prog_buf.shrink_to_fit(); */
+
+        // Order to prealocate memory to avoid unnecessary reallocations due to vector growth
+        prog_buf.reserve(fileSize);
+
+        // Read entire file content into prealocated vector memory
+        prog_buf.insert(begin(prog_buf),
+            std::istream_iterator<uint8_t>(file),
+            std::istream_iterator<uint8_t>());
+
+        // Make sure entire content is loaded
+        return size(prog_buf) == fileSize;
+        }
 
 	bool OnUserCreate()
 	{
@@ -235,9 +267,6 @@ public:
 };
 
 
-
-
-
 int main(int argc, char* argv[])
 {
 	if (argc>2) {
@@ -248,7 +277,14 @@ int main(int argc, char* argv[])
 	Demo_olc6502 demo;
 
 	if (argc<2)	{
-		demo.LoadDefaultProgram();		// if no file given, load a short default demo program
+		demo.LoadDefaultProgram();		// if no filename given, load a short default demo program
+	}
+
+	if (argc==2) {
+		if (!demo.loadProgramFromFile(argv[1])) {
+			std::cerr << "Error reading file " << argv[1] << std::endl;
+			return 1;
+		}
 	}
 
 	demo.Construct(680, 480, 2, 2);

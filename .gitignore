@@ -24,3 +24,6 @@
 
 # Target executable
 6502glx
+
+# 6502 executables
+*.bin
