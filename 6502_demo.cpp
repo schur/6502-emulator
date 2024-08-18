@@ -62,6 +62,7 @@ class Demo_olc6502 : public olc::PixelGameEngine
 public:
 	Demo_olc6502() { sAppName = "olc6502 Demonstration"; }
 
+	float KeyDownTime;
 	Bus nes;
 	std::map<uint16_t, std::string> mapAsm;
 	std::vector<uint8_t> prog_buf;		// buffer to hold the program (before being loaded into nes.ram)
@@ -247,6 +248,10 @@ public:
 
 		// Reset
 		ResetCPU();
+
+		// clear KetPressTime
+		KeyDownTime = 0;
+
 		return true;
 
 	}
@@ -257,7 +262,17 @@ public:
 
 
 		if (GetKey(olc::Key::SPACE).bPressed)
+		{
+			KeyDownTime = 0;
 			StepCPU(1);
+		}
+
+		if (GetKey(olc::Key::SPACE).bHeld)
+		{
+			KeyDownTime = KeyDownTime + fElapsedTime;
+			if (KeyDownTime > 0.5)	// delay 500msec before continuous stepping when <Space> is held down 
+			StepCPU(1);
+		}
 
 		if (GetKey(olc::Key::R).bPressed)
 			ResetCPU();
