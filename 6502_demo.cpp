@@ -207,6 +207,26 @@ public:
         return size(prog_buf) == fileSize;
         }
 
+	// Reset CPU
+	void ResetCPU()
+	{
+		nes.cpu.reset();
+		StepCPU(1);			// step CPU once to fix no response to space first time in OnUserUpdate
+	}
+
+	// Step CPU [numStep] times
+	void StepCPU(uint16_t numStep)
+	{
+		for (uint16_t i = 0; i < numStep; i++) {
+			do
+			{
+				nes.cpu.clock();
+			} 
+			while (!nes.cpu.complete());
+		} 
+	}
+
+
 	bool OnUserCreate()
 	{
 		// load program from prog_buf into emulated ram
@@ -226,8 +246,9 @@ public:
 		mapAsm = nes.cpu.disassemble(0x0000, 0xFFFF);
 
 		// Reset
-		nes.cpu.reset();
+		ResetCPU();
 		return true;
+
 	}
 
 	bool OnUserUpdate(float fElapsedTime)
@@ -236,16 +257,10 @@ public:
 
 
 		if (GetKey(olc::Key::SPACE).bPressed)
-		{
-			do
-			{
-				nes.cpu.clock();
-			} 
-			while (!nes.cpu.complete());
-		}
+			StepCPU(1);
 
 		if (GetKey(olc::Key::R).bPressed)
-			nes.cpu.reset();
+			ResetCPU();
 
 		if (GetKey(olc::Key::I).bPressed)
 			nes.cpu.irq();
