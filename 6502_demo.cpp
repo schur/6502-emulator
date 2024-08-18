@@ -62,7 +62,15 @@ class Demo_olc6502 : public olc::PixelGameEngine
 public:
 	Demo_olc6502() { sAppName = "olc6502 Demonstration"; }
 
-	float KeyDownTime;
+	float KeyDownTime;	// for continuous stepping on holding space key
+
+	struct LoopData
+	{
+		uint16_t LoopEnd;	// for loop stepping
+		bool on;			// on/off toogle
+	};
+	LoopData Loop;
+
 	Bus nes;
 	std::map<uint16_t, std::string> mapAsm;
 	std::vector<uint8_t> prog_buf;		// buffer to hold the program (before being loaded into nes.ram)
@@ -212,6 +220,7 @@ public:
 	void ResetCPU()
 	{
 		nes.cpu.reset();
+		Loop.on = false;
 		StepCPU(1);			// step CPU once to fix no response to space first time in OnUserUpdate
 	}
 
@@ -249,7 +258,7 @@ public:
 		// Reset
 		ResetCPU();
 
-		// clear KetPressTime
+		// clear variables for key functions
 		KeyDownTime = 0;
 
 		return true;
@@ -260,10 +269,10 @@ public:
 	{
 		Clear(olc::DARK_BLUE);
 
-
 		if (GetKey(olc::Key::SPACE).bPressed)
 		{
 			KeyDownTime = 0;
+			Loop.on = false;		// space press stops any looping
 			StepCPU(1);
 		}
 
@@ -273,6 +282,29 @@ public:
 			if (KeyDownTime > 0.5)	// delay 500msec before continuous stepping when <Space> is held down 
 			StepCPU(1);
 		}
+
+		if (GetKey(olc::Key::L).bPressed)	// loop once 
+		{
+			Loop.LoopEnd = nes.cpu.pc;
+			Loop.on = true;
+			StepCPU(1);
+		}
+
+		if (GetKey(olc::Key::C).bPressed)	// continuous looping
+		{
+			Loop.LoopEnd = nes.cpu.pc + 1;
+			Loop.on = true;
+			StepCPU(1);
+		}
+
+		if (Loop.on)
+		{
+			if (nes.cpu.pc < Loop.LoopEnd)	// continue stepping until loop complete
+				StepCPU(1);
+			else
+				Loop.on = false;			// reset loop flag
+		}
+
 
 		if (GetKey(olc::Key::R).bPressed)
 			ResetCPU();
@@ -290,7 +322,8 @@ public:
 		DrawCode(448, 72, 26);
 
 
-		DrawString(10, 370, "SPACE = Step Instruction    R = RESET    I = IRQ    N = NMI");
+		DrawString(10, 370, "SPACE = Step Instruction    C = Loop Once    C = Loop Continuously");
+		DrawString(10, 380, "R = RESET    I = IRQ    N = NMI");
 
 		return true;
 	}
