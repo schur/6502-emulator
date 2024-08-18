@@ -322,7 +322,7 @@ public:
 		DrawCode(448, 72, 26);
 
 
-		DrawString(10, 370, "SPACE = Step Instruction    C = Loop Once    C = Loop Continuously");
+		DrawString(10, 370, "SPACE = Step Instruction    L = Loop Once    C = Loop Continuously");
 		DrawString(10, 380, "R = RESET    I = IRQ    N = NMI");
 
 		return true;
@@ -350,7 +350,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	demo.Construct(680, 480, 2, 2);
+	demo.Construct(680, 480, 2, 2, false, true);  // last true enables vsync
 	demo.Start();
 
 	return 0;
