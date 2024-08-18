@@ -964,7 +964,7 @@ namespace olc
 		virtual ~PixelGameEngine();
 	public:
 		olc::rcode Construct(int32_t screen_w, int32_t screen_h, int32_t pixel_w, int32_t pixel_h,
-			bool full_screen = false, bool vsync = false, bool cohesion = false);
+			bool full_screen = false, bool vsync = true, bool cohesion = false);
 		olc::rcode Start();
 
 	public: // User Override Interfaces
@@ -1225,7 +1225,7 @@ namespace olc
 		olc::vf2d	vPixel = { 1.0f, 1.0f };
 		bool		bHasInputFocus = false;
 		bool		bHasMouseFocus = false;
-		bool		bEnableVSYNC = false;
+		bool		bEnableVSYNC = true;
 		float		fFrameTimer = 1.0f;
 		float		fLastElapsed = 0.0f;
 		int			nFrameCount = 0;		
