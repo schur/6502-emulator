@@ -23,7 +23,7 @@
 *.bak
 
 # Target executable
-6502_demo
+6502glx
 
 # 6502 executables
-examples
+*.bin
