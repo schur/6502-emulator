@@ -1,5 +1,6 @@
 /*
 	olc6502 - An emulation of the 6502/2A03 processor
+	"Thanks Dad for believing computers were gonna be a big deal..." - javidx9
 
 	License (OLC-3)
 	~~~~~~~~~~~~~~~
@@ -35,14 +36,47 @@
 	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+	Background (javidx9)
+	~~~~~~~~~~
+	I love this microprocessor. It was at the heart of two of my favourite
+	machines, the BBC Micro, and the Nintendo Entertainment System, as well
+	as countless others in that era. I learnt to program on the Model B, and
+	I learnt to love games on the NES, so in many ways, this processor is
+	why I am the way I am today.
+
+	In February 2019, I decided to undertake a selfish personal project and
+	build a NES emulator. Ive always wanted to, and as such I've avoided
+	looking at source code for such things. This made making this a real
+	personal challenge. I know its been done countless times, and very likely
+	in far more clever and accurate ways than mine, but I'm proud of this.
+
 	Datasheet: http://archive.6502.org/datasheets/rockwell_r650x_r651x.pdf
 
 	Files: olc6502.h, olc6502.cpp
 
-	Authors
+	Relevant Video: https://youtu.be/8XmxKPJDGU0
+
+	Links
+	~~~~~
+	YouTube:	https://www.youtube.com/javidx9
+				https://www.youtube.com/javidx9extra
+	Discord:	https://discord.gg/WhwHUMV
+	Twitter:	https://www.twitter.com/javidx9
+	Twitch:		https://www.twitch.tv/javidx9
+	GitHub:		https://www.github.com/onelonecoder
+	Patreon:	https://www.patreon.com/javidx9
+	Homepage:	https://www.onelonecoder.com
+	
+	Update (schur)
 	~~~~~~
+	I like this 6502 emulator contained in OneLoneCoder's NES emulator, which
+	can be used as a standalone 6502 emulator. So decided to fork it and
+	develop it further. 
+
+	Authors
+	~~~~~~~
 	David Barr, aka javidx9, �OneLoneCoder 2019
-	Reinhard Schu, 2024
+	Reinhard Schu, 2024 (derivate works)
 */
 
 #pragma once
