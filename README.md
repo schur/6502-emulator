@@ -6,6 +6,12 @@ The emulator comes with an emulated Bus and RAM.
 ## Build
 To build, simply clone this repository, enter the directory and type
 `make`
-This will build the executable 6502glx
+This will build the executable
 ## Usage
-`./6502glx`
+`./6502_demo <binary file>`
+
+If no argument is given, a simple demo 6502 assembly program (addition loop) will automatically be loaded.
+## Example
+To run the example (Ben Eater's convert to decimal):
+
+`./6502_demo examples/beneater_div.bin`
