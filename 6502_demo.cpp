@@ -117,18 +117,30 @@ public:
 		return s;
 	};
 
+	char ascii(uint32_t n)
+	{
+		char s = '.';
+		if (std::isprint(n))
+			s = n;
+		return s;
+	};
+
+
 	void DrawRam(int x, int y, uint16_t nAddr, int nRows, int nColumns)
 	{
 		int nRamX = x, nRamY = y;
 		for (int row = 0; row < nRows; row++)
 		{
 			std::string sOffset = "$" + hex(nAddr, 4) + ":";
+			std::string sASCII = " ";
 			for (int col = 0; col < nColumns; col++)
 			{
-				sOffset += " " + hex(nes.read(nAddr, true), 2);
+				int value = nes.read(nAddr, true);
+				sOffset += " " + hex(value, 2);
+				sASCII.append (1, ascii(value));
 				nAddr += 1;
 			}
-			DrawString(nRamX, nRamY, sOffset);
+			DrawString(nRamX, nRamY, sOffset + sASCII);
 			nRamY += 10;
 		}
 	}
@@ -352,8 +364,8 @@ public:
 		// Draw Ram Page 0x00		
 		DrawRam(2, 2, 0x0000, 16, 16);
 		DrawRam(2, 182, 0x8000, 16, 16);
-		DrawCpu(448, 2);
-		DrawCode(448, 72, 26);
+		DrawCpu(600, 2);
+		DrawCode(600, 72, 26);
 
 
 		DrawString(10, 370, "SPACE = Step Instruction    L = Loop Once    C = Loop Continuously");
@@ -384,7 +396,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	demo.Construct(680, 480, 2, 2, false, true);  // last true enables vsync
+	demo.Construct(840, 480, 2, 2, false, true);  // last true enables vsync
 	demo.Start();
 
 	return 0;
